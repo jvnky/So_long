@@ -1,7 +1,7 @@
 NAME = so_long
 
 CC = gcc
-CFLAGS = -Werror -Wextra -fsanitize=address -g3
+CFLAGS = -Werror -Wextra -Wall -fsanitize=address -g3
 CFLAG2 = -ldl -lmlx -lm -lbsd -lX11 -lXext
 LINKMIN = -Lminilibx-linux/ -lmlx -Iminilibx-linux
 RM = rm -f

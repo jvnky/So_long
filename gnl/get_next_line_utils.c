@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:45:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/04/23 21:45:33 by ychair           ###   ########.fr       */
+/*   Updated: 2022/04/28 09:54:30 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ char	*ft_strdup(const char *s1)
 	unsigned int	i;
 
 	i = 0;
-	if (!(ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1))))
+	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (!ptr)
 		return (NULL);
 	while (i < ft_strlen(s1))
 	{
@@ -31,7 +32,7 @@ char	*ft_strdup(const char *s1)
 
 char	*ft_strchr(const char *s, int c)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (c == '\0')
@@ -57,7 +58,8 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	size = ft_strlen(s1) + ft_strlen(s2);
-	if (!(str = (char *)malloc(sizeof(char) * size + 1)))
+	str = (char *)malloc(sizeof(char) * size + 1);
+	if (!str)
 		return (NULL);
 	while (*s1)
 		str[++i] = *(s1++);

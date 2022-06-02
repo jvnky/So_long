@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/04/28 08:33:38 by ychair           ###   ########.fr       */
+/*   Updated: 2022/05/19 05:36:34 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include "gnl/get_next_line.h"
 # include <fcntl.h>
 
+
+
 typedef struct s_map
 {
 	int		line;
@@ -25,9 +27,46 @@ typedef struct s_map
 
 }	t_map;
 
+typedef struct s_img
+{
+
+	void	*img;
+	char	*addr;
+	char	*relative_path;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+	int		img_width;
+	int		img_height;
+	void	*mlx;
+	void	*mlx_win;
+	int		x;
+	int		y;
+} t_img;
+
+typedef struct s_player
+{
+	int x;
+	int y;
+
+} t_player;
+enum e_keycode
+{
+	KEY_UP = 119,
+	KEY_DOWN = 115,
+	KEY_LEFT = 97,
+	KEY_RIGHT = 100,
+	ARROW_UP = 65362,
+	ARROW_DOWN = 65364,
+	ARROW_LEFT = 65361,
+	ARROW_RIGHT =65363,
+	RESET = 114,
+	ESC = 65307,
+};
 
 char	**puttab(char *av,char **map);
-int		linemap(char *av, t_map **maprule);
-
-
+int		linemap(char *av, t_map *maprule);
+int		verifmap(char **map, t_map *maprule);
+int		ft_errormap(char **map, t_map *maprule);
+int		ft_render(char **map,t_map	*maprule);
 #endif

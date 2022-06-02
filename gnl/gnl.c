@@ -6,13 +6,13 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:43:51 by ychair            #+#    #+#             */
-/*   Updated: 2022/04/24 02:58:31 by ychair           ###   ########.fr       */
+/*   Updated: 2022/05/01 05:15:06 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	int			letter;
 	char		buff[BUFFER_SIZE + 1];
@@ -23,23 +23,20 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 	if (buffline[fd] == NULL)
 		buffline[fd] = ft_strdup("");
-	while ((letter = read(fd, buff, BUFFER_SIZE)) > 0)
+	letter = read(fd, buff, BUFFER_SIZE);
+	while (letter > 0)
 	{
 		buff[letter] = '\0';
-		if (!(tmp = ft_strjoin(buffline[fd], buff)))
-			return (-1);
+		tmp = ft_strjoin(buffline[fd], buff);
 		free(buffline[fd]);
-		buffline[fd] = 0;
 		buffline[fd] = tmp;
+		letter = read(fd, buff, BUFFER_SIZE);
 	}
-	if (letter < 0)
-		return (-1);
 	*line = ft_cpylink(buffline, fd);
-	if ((buffline[fd] = ft_strchr(buffline[fd], '\n')))
-			return (1);
-
+	buffline[fd] = ft_strchr(buffline[fd], '\n');
+	if (buffline[fd])
+		return (1);
 	free(tmp);
-
 	return (0);
 }
 
@@ -51,8 +48,7 @@ char	*ft_cpylink(char **buffline, int fd)
 	i = 0;
 	while (buffline[fd][i] && buffline[fd][i] != '\n')
 		i++;
-	if (!(link = (char *)malloc(sizeof(char) * i + 1)))
-		return (NULL);
+	link = (char *)malloc(sizeof(char) * i + 1);
 	i = 0;
 	while (buffline[fd][i] && buffline[fd][i] != '\n')
 	{

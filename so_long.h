@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/05/19 05:36:34 by ychair           ###   ########.fr       */
+/*   Updated: 2022/06/02 06:29:54 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,6 @@
 
 
 
-typedef struct s_map
-{
-	int		line;
-	int		column;
-
-}	t_map;
 
 typedef struct s_img
 {
@@ -43,6 +37,15 @@ typedef struct s_img
 	int		x;
 	int		y;
 } t_img;
+
+typedef struct s_map
+{
+	char	c;
+	int		line;
+	int		column;
+	char 	**map;
+	t_img	*test;
+}	t_map;
 
 typedef struct s_player
 {

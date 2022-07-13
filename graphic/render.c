@@ -6,80 +6,141 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 03:17:50 by ychair            #+#    #+#             */
-/*   Updated: 2022/05/19 05:36:32 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/13 04:31:36 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
+// void ff(t_map *maprule);
 
-
-void	path(char c,t_img *img)
+void	path(char c,t_map *img)
 {
-	// t_player *pos;
-
 	if(c == '1')
-		img->relative_path = "./graphic/image/sprites/tilesets/floors/wooden.xpm";
+		img->test->relative_path = "./graphic/image/sprites/tilesets/floors/wooden.xpm";
 	if(c == '0')
-		img->relative_path = "./graphic/image/sprites/tilesets/grass.xpm";
+		img->test->relative_path = "./graphic/image/sprites/tilesets/grass.xpm";
 	if(c == 'C')
-		img->relative_path = "./graphic/image/sprites/tilesets/watermelon.xpm";
+		img->test->relative_path = "./graphic/image/sprites/tilesets/watermelon.xpm";
 	if(c == 'E')
-		img->relative_path = "./graphic/image/sprites/tilesets/floors/arrow_1.xpm";
+		img->test->relative_path = "./graphic/image/sprites/tilesets/floors/arrow_1.xpm";
 	if(c == 'P')
-	{
-		img->relative_path = "./graphic/image/sprites/tilesets/char/priest1.xpm";
-		// pos->x = img->x;
-		// pos->y = img->y;
-	}
-	img->img = mlx_xpm_file_to_image(img->mlx,img->relative_path,&img->img_width,&img->img_height);
-	mlx_put_image_to_window(img->mlx, img->mlx_win, img->img, img->x, img->y);
+		img->test->relative_path = "./graphic/image/sprites/tilesets/char/priest1.xpm";
+	img->test->img = mlx_xpm_file_to_image(img->test->mlx,img->test->relative_path,&img->test->img_width,&img->test->img_height);
+	mlx_put_image_to_window(img->test->mlx, img->test->mlx_win, img->test->img, img->test->x, img->test->y);
 }
 
-int	key_hook(int keycode, t_img *img)
+int	ft_refresh(t_map *maprule)
 {
-	if(keycode == KEY_UP)
-		printf("UP\n");
-	if(keycode == KEY_DOWN)
-		printf("DOWN\n");
+	//img->mlx = mlx_init();
+	//img->mlx_win = mlx_new_window(img->mlx, 34*16,6*16, "So_long");
+	int i;
+	int j;
+	char tmp;
 
-	//mlx_loop_hook(img->mlx, render_next_frame, YourStruct);
+	i = 0;
+	// puts("zsdwfwef");
+	maprule->test->y = 0;
+	while(i < maprule->line)
+	{
+		printf("%d\n",i);
+		// puts("qqqqq");
+		j = 0;
+		maprule->test->x = 0;
+		while(j < maprule->column)
+			{
+				//printf("%d\n",j);
+				// puts("ffff");
+				if(maprule->map[i][j] == 'P' && maprule->c == 'D')
+				{
+					tmp = maprule->map[i][j];
+					maprule->map[i][j] = maprule->map[i+1][j];
+					maprule->map[i+1][j] = tmp;
+				puts("xxxx");
+				}
+				path(maprule->map[i][j],maprule);
+				// puts("asd");
+				j++;
+				maprule->test->x+=maprule->test->img_height;
+			}
+		i++;
+		maprule->test->y+=maprule->test->img_width;
+	}
+	//maprule->test->img = mlx_xpm_file_to_image(maprule->test->mlx,maprule->test->relative_path,&maprule->test->img_width,&maprule->test->img_height);
+	//mlx_put_image_to_window(maprule->test->mlx, maprule->test->mlx_win, maprule->test->img, maprule->test->x, maprule->test->y);
+	// ff(maprule);
 	return (0);
 }
 
+int	key_hook(int keycode, t_map *maprule,t_img *img)
+{
+	//printf(" %d\n",keycode);
+	if(keycode == KEY_UP || keycode == ARROW_UP)
+		{	printf("UP\n");
+		maprule->c = 'H';
+	}
+	if(keycode == KEY_DOWN || keycode == ARROW_DOWN)
+		{	printf("down\n");
+		maprule->c = 'B';
+	}
+	if(keycode == KEY_LEFT || keycode == ARROW_LEFT)
+	{	printf("left\n");
+		maprule->c = 'G';
+	}
+	if(keycode == KEY_RIGHT || keycode == ARROW_RIGHT)
+	{	printf("right\n");
+		maprule->c = 'D';
+	}
+	
+	return (0);
+}
 
-
-// int	ft_refresh(t_img *img)
-// {
-// 	img->mlx = mlx_init();
-// 	img->mlx_win = mlx_new_window(img->mlx, 34*16,6*16, "So_long");
-
-
-// }
 int ft_render(char **map,t_map	*maprule)
 {
 	int i;
 	int j;
-	t_img	img;
-
-	img.mlx = mlx_init();
-	img.mlx_win = mlx_new_window(img.mlx, maprule->column*16,maprule->line*16, "So_long");
+	maprule->map = map;
+	 maprule->test->mlx = mlx_init();
+	maprule->test->mlx_win = mlx_new_window(maprule->test->mlx, maprule->column*16,maprule->line*16, "So_long");
+//
 	i = 0;
-	img.y = 0;
+	maprule->test->y = 0;
 	while(i < maprule->line)
 	{
 		j = 0;
-		img.x = 0;
+		maprule->test->x = 0;
 		while(j < maprule->column)
 			{
-				path(map[i][j],&img);
+				path(maprule->map[i][j],maprule);
 				j++;
-				img.x+=img.img_height;
+				maprule->test->x+=maprule->test->img_height;
 			}
 		i++;
-		img.y+=img.img_width;
+		maprule->test->y+=maprule->test->img_width;
 	}
-		// mlx_key_hook(img.mlx_win, key_hook, &img);
-		// mlx_loop_hook(img.mlx, ft_refresh, &img);
-		mlx_loop(img.mlx);
+	mlx_key_hook(maprule->test->mlx_win, key_hook, &maprule);
+	//mlx_loop_hook(maprule->test->mlx, ft_refresh, maprule);
+	mlx_loop(maprule->test->mlx);
 	return(1);
 }
+// void ff(t_map *maprule)
+// {
+// 	int j;
+// 	int i;
+
+// 	i = 0;
+// 	j = 0;
+// 	maprule->test->y = 0;
+// 	while(i < maprule->line)
+// 	{
+// 		j = 0;
+// 		maprule->test->x = 0;
+// 		while(j < maprule->column)
+// 			{
+// 				path(maprule->map[i][j],maprule);
+// 				j++;
+// 				maprule->test->x+=maprule->test->img_height;
+// 			}
+// 		i++;
+// 		maprule->test->y+=maprule->test->img_width;
+// 	}
+// }

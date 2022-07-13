@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 22:03:35 by ychair            #+#    #+#             */
-/*   Updated: 2022/05/19 05:33:01 by ychair           ###   ########.fr       */
+/*   Updated: 2022/06/02 07:00:47 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	main(int ac, char **av)
 	t_map	*maprule;
 
 	maprule= (t_map *)malloc(sizeof(t_map));
+	maprule->test= (t_img *)malloc(sizeof(t_img));
 	if( ac != 2)
 	{
 		write(1, "Error\n", 6);
@@ -36,5 +37,7 @@ int	main(int ac, char **av)
 	while (i < maprule->line)
 		free(map[i++]);
 	free(map);
+	// free(maprule->test);
+	// free(maprule);
 	return (0);
 }

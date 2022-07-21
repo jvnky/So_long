@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:06:48 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/21 03:26:28 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/21 04:09:38 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,71 +18,17 @@ void	changemap(t_map *maprule,int i, int j)
 	char tmp;
 
 	if(maprule->map[i][j] == 'P' && maprule->c == 'D')
-	{
 		if(j <  maprule->column && maprule->map[i][j+1] != '1')
-		{
-			if(maprule->map[i][j+1] == 'C')
-				{
-					maprule->map[i][j+1] = '0';
-					maprule->collect++;
-				}
-		tmp = maprule->map[i][j];
-		maprule->map[i][j] = maprule->map[i][j+1];
-		maprule->map[i][j+1] = tmp;
-		maprule->c = 'Q';
-		maprule->move++;
-		}
-	}
+			right(maprule,i,j);
 	if(maprule->map[i][j] == 'P' && maprule->c == 'G')
-	{
 		if(j > 0 && maprule->map[i][j-1] != '1')
-		{
-			if(maprule->map[i][j-1] == 'C')
-				{
-					maprule->map[i][j-1] = '0';
-					maprule->collect++;
-				}
-		tmp = maprule->map[i][j];
-		maprule->map[i][j] = maprule->map[i][j-1];
-		maprule->map[i][j-1] = tmp;
-		maprule->c = 'Q';
-		maprule->move++;
-		}
-	}
+			left(maprule,i,j);
 	if(maprule->map[i][j] == 'P' && maprule->c == 'H')
-	{
 		if( i > 0 && maprule->map[i-1][j] != '1')
-		{
-			if(maprule->map[i-1][j] == 'C')
-				{
-					maprule->map[i-1][j] = '0';
-					maprule->collect++;
-				}
-			tmp = maprule->map[i][j];
-			maprule->map[i][j] = maprule->map[i-1][j];
-			maprule->map[i-1][j] = tmp;
-			maprule->c = 'Q';
-			maprule->move++;
-		}
-	}
+			up(maprule,i,j);
 	if(i < maprule->line && maprule->map[i][j] == 'P' && maprule->c == 'B')
-	{
 			if( maprule->map[i+1][j] != '1'  && i < maprule->line)
-		{
-			if(maprule->map[i+1][j] == 'C')
-				{
-					maprule->map[i+1][j] = '0';
-					maprule->collect++;
-				}
-		tmp = maprule->map[i][j];
-		maprule->map[i][j] = maprule->map[i+1][j];
-		maprule->map[i+1][j] = tmp;
-		maprule->c = 'Q';
-		maprule->move++;
-		}
-	}
-
-
+			down(maprule,i,j);
 }
 
 int	frame_map(t_map *maprule,char c)

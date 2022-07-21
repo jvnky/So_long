@@ -12,7 +12,8 @@ FILES = main.c\
 		gnl/get_next_line_utils.c\
 		gnl/gnl.c\
 		graphic/render.c\
-		graphic/Frame.c
+		graphic/Frame.c\
+		Parsing/move.c
 
 
 

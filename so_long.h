@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/21 03:27:18 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/21 04:04:16 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,5 +78,11 @@ int		verifmap(char **map, t_map *maprule);
 int		ft_errormap(char **map, t_map *maprule);
 int		ft_render(char **map,t_map	*maprule);
 int		path(char c,t_map *img);
+void	up(t_map *maprule,int i , int j);
+void	down(t_map *maprule,int i , int j);
+void	left(t_map *maprule,int i , int j);
+void	right(t_map *maprule,int i , int j);
+
+
 
 #endif

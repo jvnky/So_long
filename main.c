@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 22:03:35 by ychair            #+#    #+#             */
-/*   Updated: 2022/06/02 07:00:47 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/21 03:24:08 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	main(int ac, char **av)
 	map = puttab(av[1],map);
 	if(!ft_errormap(map, maprule))
 		return (0);
-		//printf("%d | %d\n",maprule->line,maprule->column);
 	ft_render(map,maprule);
 	i = 0;
 	while (i < maprule->line)

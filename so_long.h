@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/06/02 06:29:54 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/21 03:27:18 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "minilibx-linux/mlx.h"
 # include "gnl/get_next_line.h"
 # include <fcntl.h>
-
+# include<stdlib.h>
 
 
 
@@ -43,6 +43,9 @@ typedef struct s_map
 	char	c;
 	int		line;
 	int		column;
+	int		move;
+	int		collect;
+	int		maxCollect;
 	char 	**map;
 	t_img	*test;
 }	t_map;
@@ -67,9 +70,13 @@ enum e_keycode
 	ESC = 65307,
 };
 
+int		frame_map(t_map *maprule,char c);
+void	render_frame(t_map *maprule);
 char	**puttab(char *av,char **map);
 int		linemap(char *av, t_map *maprule);
 int		verifmap(char **map, t_map *maprule);
 int		ft_errormap(char **map, t_map *maprule);
 int		ft_render(char **map,t_map	*maprule);
+int		path(char c,t_map *img);
+
 #endif

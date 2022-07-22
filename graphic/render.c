@@ -6,76 +6,90 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 03:17:50 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/21 03:25:05 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 05:23:10 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-int	path(char c,t_map *img)
+int	path(char c, t_map *img)
 {
-	if(c == '1')
-		img->test->relative_path = "./graphic/image/sprites/tilesets/floors/wooden.xpm";
-	if(c == '0')
-		img->test->relative_path = "./graphic/image/sprites/tilesets/grass.xpm";
-	if(c == 'C')
-		img->test->relative_path = "./graphic/image/sprites/tilesets/watermelon.xpm";
-	if(c == 'E')
-		img->test->relative_path = "./graphic/image/sprites/tilesets/floors/arrow_1.xpm";
-	if(c == 'P')
-		img->test->relative_path = "./graphic/image/sprites/tilesets/char/priest1.xpm";
-	img->test->img = mlx_xpm_file_to_image(img->test->mlx,img->test->relative_path,&img->test->img_width,&img->test->img_height);
-	mlx_put_image_to_window(img->test->mlx, img->test->mlx_win, img->test->img, img->test->x, img->test->y);
+	if (c == img->wall)
+		img->test->relative_path
+			= "./graphic/image/sprites/tilesets/floors/wooden.xpm";
+	if (c == img->grass)
+		img->test->relative_path
+			= "./graphic/image/sprites/tilesets/grass.xpm";
+	if (c == img->col)
+		img->test->relative_path
+			= "./graphic/image/sprites/tilesets/watermelon.xpm";
+	if (c == img->exit)
+		img->test->relative_path
+			= "./graphic/image/sprites/tilesets/floors/arrow_1.xpm";
+	if (c == img->charac)
+		img->test->relative_path
+			= "./graphic/image/sprites/tilesets/char/priest1.xpm";
+	img->test->img = mlx_xpm_file_to_image(img->test->mlx, img->test
+			->relative_path, &img->test->img_width, &img->test->img_height);
+	if (img->test->img == NULL)
+		errorall();
+	mlx_put_image_to_window(img->test->mlx, img->test->mlx_win,
+		img->test->img, img->test->x, img->test->y);
 	return (1);
 }
 
-
 int	key_hook(int keycode, t_map *maprule)
 {
-
-	if(keycode == ESC)
-		exit(0);
-	if(keycode == KEY_UP || keycode == ARROW_UP)
-		frame_map(maprule,'H');
-	if(keycode == KEY_DOWN || keycode == ARROW_DOWN)
-		frame_map(maprule,'B');
-	if(keycode == KEY_LEFT || keycode == ARROW_LEFT)
-		frame_map(maprule,'G');
-	if(keycode == KEY_RIGHT || keycode == ARROW_RIGHT)
-		frame_map(maprule,'D');
+	if (keycode == ESC)
+		closewin(maprule);
+	if (keycode == KEY_UP || keycode == ARROW_UP)
+		frame_map(maprule, 'H');
+	if (keycode == KEY_DOWN || keycode == ARROW_DOWN)
+		frame_map(maprule, 'B');
+	if (keycode == KEY_LEFT || keycode == ARROW_LEFT)
+		frame_map(maprule, 'G');
+	if (keycode == KEY_RIGHT || keycode == ARROW_RIGHT)
+		frame_map(maprule, 'D');
 	return (0);
 }
 
-
-int ft_render(char **map,t_map	*maprule)
+void	printmap(t_map *maprule)
 {
-	int i;
-	int j;
-	maprule->map = map;
-	maprule->move = 0;
-	maprule->collect = 0;
-	 maprule->test->mlx = mlx_init();
-	maprule->test->mlx_win = mlx_new_window(maprule->test->mlx, maprule->column*16,maprule->line*16, "So_long");
-//
+	int	i;
+	int	j;
+
 	i = 0;
 	maprule->test->y = 0;
-	while(i < maprule->line)
+	while (i < maprule->line)
 	{
 		j = 0;
 		maprule->test->x = 0;
-		while(j < maprule->column)
-			{
-				path(maprule->map[i][j],maprule);
-				j++;
-				maprule->test->x+=maprule->test->img_height;
-			}
+		while (j < maprule->column)
+		{
+			path(maprule->map[i][j], maprule);
+			j++;
+			maprule->test->x += maprule->test->img_height;
+		}
 		i++;
-		maprule->test->y+=maprule->test->img_width;
+		maprule->test->y += maprule->test->img_width;
 	}
-	mlx_key_hook(maprule->test->mlx_win, key_hook, maprule);
-	mlx_loop(maprule->test->mlx);
-	return(0);
 }
 
-
-
+int	ft_render(char **map, t_map	*maprule)
+{
+	maprule->map = map;
+	maprule->move = 0;
+	maprule->collect = 0;
+	maprule->test->mlx = mlx_init();
+	if (maprule->test->mlx == NULL)
+		errorall();
+	maprule->test->mlx_win = mlx_new_window(maprule->test->mlx, maprule
+			->column * 16, maprule->line * 16, "So_long");
+	if (maprule->test->mlx_win == NULL)
+		errorall();
+	printmap(maprule);
+	mlx_hook(maprule->test->mlx_win, 17, (1L << 17), closewin, maprule);
+	mlx_hook(maprule->test->mlx_win, 2, (1L << 0), key_hook, maprule);
+	mlx_loop(maprule->test->mlx);
+	return (0);
+}

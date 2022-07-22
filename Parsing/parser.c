@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:48:38 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/21 03:29:51 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 05:37:05 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,16 @@ char	**puttab(char *av, char **map)
 	char	*line;
 	int		i;
 
-	i = 0;
 	fd = open(av, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error\n", 6);
+		exit (0);
+	}
 	i = 0;
 	while (get_next_line(fd, &line))
 	{
 		map[i] = ft_strdup(line);
-		//printf("%s\n", map[i]);
 		i++;
 		free(line);
 	}
@@ -40,6 +43,11 @@ int	linemap(char *av, t_map *maprule)
 
 	i = 0;
 	fd = open(av, O_RDONLY);
+	if (fd < 0)
+	{
+		write(1, "Error\n", 6);
+		exit (0);
+	}
 	while (get_next_line(fd, &line))
 	{
 		maprule->column = ft_strlen(line);
@@ -52,6 +60,25 @@ int	linemap(char *av, t_map *maprule)
 	return (1);
 }
 
+int	toomuchline(char c, t_map *maprule, int i, int tab[])
+{
+	if (c != maprule->exit && c != maprule->charac && c != maprule->col
+		&& c != maprule->grass && c != maprule->wall)
+		return (0);
+	if ((i == 0 || i == maprule->line - 1) && c != maprule->wall)
+		return (0);
+	if (c == maprule->charac)
+		tab['p'] = maprule->player++;
+	if (c == maprule->exit)
+		tab['e'] = 1;
+	if (c == maprule->col)
+	{
+		tab['c'] = 1;
+		maprule->maxcollect++;
+	}
+	return (1);
+}
+
 int	verifmap(char **map, t_map *maprule)
 {
 	int	i;
@@ -59,28 +86,21 @@ int	verifmap(char **map, t_map *maprule)
 	int	tab[255];
 
 	i = 0;
-	maprule->maxCollect = 0;
+	maprule->maxcollect = 0;
 	while (i < maprule->line)
 	{
 		j = 0;
 		while (j < maprule->column)
 		{
-			if ((i == 0 || i == maprule->line - 1) && map[i][j] != '1')
+			if (!toomuchline(map[i][j], maprule, i, tab))
 				return (0);
-			if (map[i][j] == 'E')
-				tab['e'] = 1;
-			if (map[i][j] == 'P')
-				tab['p'] = 1;
-			if (map[i][j] == 'C')
-			{
-				tab['c'] = 1;
-				maprule->maxCollect++;
-			}
+			if ((j == 0 || j == maprule->column - 1) && map[i][j] != '1')
+				return (0);
 			j++;
 		}
 		i++;
 	}
-	if (tab['e'] != 1 || tab['p'] != 1 || tab['c'] != 1)
+	if (tab['e'] != 1 || maprule->player != 1 || tab['c'] != 1)
 		return (0);
 	return (1);
 }

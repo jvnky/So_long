@@ -1,8 +1,9 @@
 NAME = so_long
 
 CC = gcc
-CFLAGS =
+CFLAGS = -Werror -Wall -Wextra
 CFLAG2 = -ldl -lmlx -lm -lbsd -lX11 -lXext
+LEAKS = -fsanitize=address -g3
 LINKMIN = -Lminilibx-linux/ -lmlx -Iminilibx-linux
 RM = rm -f
 OBJ = $(FILES:.c=.o)
@@ -13,16 +14,14 @@ FILES = main.c\
 		gnl/gnl.c\
 		graphic/render.c\
 		graphic/Frame.c\
-		Parsing/move.c
-
+		Parsing/move.c\
+		Parsing/itoa.c
 
 
 $(NAME): $(OBJ)
-		$(CC) $(OBJ) $(CFLAG2) $(LINKMIN)  $(CFLAGS) -o $(NAME)
-
+		$(CC) $(OBJ) $(CFLAG2) $(LINKMIN) $(CFLAG) -o $(NAME)
 
 all: $(NAME)
-
 
 clean:
 	@rm -f $(OBJ)
@@ -33,4 +32,7 @@ fclean:
 
 re: clean all
 
-.PHONY: bonus all clean fclean re
+leaks: $(OBJ)
+	$(CC) $(OBJ) $(CFLAG2) $(LINKMIN) $(CFLAG) $(LEAKS) -o $(NAME)
+
+.PHONY: bonus all clean fclean re leaks

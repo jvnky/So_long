@@ -6,27 +6,45 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:45:41 by ychair            #+#    #+#             */
-/*   Updated: 2022/04/23 21:50:28 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:46:06 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
+
+
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define OPEN_MAX 256
-# include <stdlib.h>
-# include <unistd.h>
+# define BUFFER_SIZE 32
+
+# include "get_next_line.h"
+# include <sys/types.h>
 # include <sys/uio.h>
-# include <stdio.h>
+# include <sys/stat.h>
 # include <fcntl.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 512
-# endif
+typedef struct s_gnl
+{
+	int				fd;
+	int				index;
+	char			*ligne;
+	int				fin;
+	char			*buffer;
+	int				ret;
+	struct s_gnl	*next;
+}					t_gnl;
 
-int		get_next_line(int fd, char **line);
-size_t	ft_strlen(const char *s);
-char	*ft_strjoin(const char *s1, const char *s2);
-char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *s1);
-char	*ft_cpylink(char **buffline, int fd);
+char				*ft_strjoin(char *s1, char const s2);
+char				*ft_strdup(const char *src);
+int					get_next_line(int fd, char **line);
+int					ft_strlen(const char *s);
+char				*ft_search(int fd, t_gnl *lst);
+int					ft_check(int fd, t_gnl *lst);
+t_gnl				*ft_lstnew(int content);
+void				ft_lstadd_back(t_gnl **alst, t_gnl *new);
+
 #endif

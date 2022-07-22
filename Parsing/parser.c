@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:48:38 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 05:37:05 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:08:52 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	linemap(char *av, t_map *maprule)
 
 	i = 0;
 	fd = open(av, O_RDONLY);
-	if (fd < 0)
+	if (fd <= 0)
 	{
 		write(1, "Error\n", 6);
 		exit (0);
@@ -51,7 +51,8 @@ int	linemap(char *av, t_map *maprule)
 	while (get_next_line(fd, &line))
 	{
 		maprule->column = ft_strlen(line);
-		free(line);
+		if (line)
+			free(line);
 		i++;
 	}
 	free(line);

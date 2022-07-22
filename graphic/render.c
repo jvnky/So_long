@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 03:17:50 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 05:23:10 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 06:36:29 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ int	path(char c, t_map *img)
 {
 	if (c == img->wall)
 		img->test->relative_path
-			= "./graphic/image/sprites/tilesets/floors/wooden.xpm";
+			= "./graphic/image/sprites/tilesets/floors/arbre.xpm";
 	if (c == img->grass)
 		img->test->relative_path
-			= "./graphic/image/sprites/tilesets/grass.xpm";
+			= "./graphic/image/sprites/tilesets/nothing.xpm";
 	if (c == img->col)
 		img->test->relative_path
-			= "./graphic/image/sprites/tilesets/watermelon.xpm";
+			= "./graphic/image/sprites/tilesets/frozinha.xpm";
 	if (c == img->exit)
 		img->test->relative_path
-			= "./graphic/image/sprites/tilesets/floors/arrow_1.xpm";
+			= "./graphic/image/sprites/tilesets/floors/end.xpm";
 	if (c == img->charac)
 		img->test->relative_path
-			= "./graphic/image/sprites/tilesets/char/priest1.xpm";
+			= "./graphic/image/sprites/tilesets/char/nuvem.xpm";
 	img->test->img = mlx_xpm_file_to_image(img->test->mlx, img->test
 			->relative_path, &img->test->img_width, &img->test->img_height);
 	if (img->test->img == NULL)
@@ -84,7 +84,7 @@ int	ft_render(char **map, t_map	*maprule)
 	if (maprule->test->mlx == NULL)
 		errorall();
 	maprule->test->mlx_win = mlx_new_window(maprule->test->mlx, maprule
-			->column * 16, maprule->line * 16, "So_long");
+			->column * 64, maprule->line * 64, "So_long");
 	if (maprule->test->mlx_win == NULL)
 		errorall();
 	printmap(maprule);

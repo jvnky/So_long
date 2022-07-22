@@ -6,55 +6,101 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:43:51 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/21 22:35:05 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 12:46:05 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	get_next_line(int fd, char **line)
+int			ft_check(int fd, t_gnl *lst)
 {
-	int			letter;
-	char		buff[BUFFER_SIZE + 1];
-	static char	*buffline[OPEN_MAX];
-	char		*tmp;
-
-	if (fd < 0 || line == NULL || fd > OPEN_MAX || BUFFER_SIZE < 1)
-		return (-1);
-	if (buffline[fd] == NULL)
-		buffline[fd] = ft_strdup("");
-	letter = read(fd, buff, BUFFER_SIZE);
-	while (letter > 0)
+	while (lst)
 	{
-		buff[letter] = '\0';
-		tmp = ft_strjoin(buffline[fd], buff);
-		free(buffline[fd]);
-		buffline[fd] = tmp;
-		letter = read(fd, buff, BUFFER_SIZE);
+		if (lst->fd == fd)
+			return (1);
+		lst = lst->next;
 	}
-	*line = ft_cpylink(buffline, fd);
-	buffline[fd] = ft_strchr(buffline[fd], '\n');
-	if (buffline[fd])
-		return (1);
-	free(tmp);
 	return (0);
 }
 
-char	*ft_cpylink(char **buffline, int fd)
+void		ft_free(t_gnl *lst)
 {
+	char	buffer[BUFFER_SIZE + 1];
 	int		i;
-	char	*link;
 
 	i = 0;
-	while (buffline[fd][i] && buffline[fd][i] != '\n')
-		i++;
-	link = (char *)malloc(sizeof(char) * i + 1);
+	while (i <= BUFFER_SIZE)
+		buffer[i++] = '\0';
+	lst->ret = read((lst->fd), buffer, BUFFER_SIZE);
+	if (lst->buffer)
+		free(lst->buffer);
+	lst->buffer = ft_strdup(buffer);
+	lst->index = 0;
+}
+
+void		ft_reset(t_gnl *lst)
+{
+	if ((lst->index) >= (BUFFER_SIZE))
+		ft_free(lst);
+	else if (lst->buffer)
+		if ((lst->buffer)[(lst->index)] == '\0'
+				&& (lst->ret > (lst->index) || lst->fd == 0))
+			ft_free(lst);
+}
+
+int			ft_create(t_gnl *lst)
+{
+	char	buffer[BUFFER_SIZE + 1];
+	int		i;
+
 	i = 0;
-	while (buffline[fd][i] && buffline[fd][i] != '\n')
+	ft_reset(lst);
+	while (i <= BUFFER_SIZE)
+		buffer[i++] = '\0';
+	if (!(lst->buffer))
 	{
-		link[i] = buffline[fd][i];
-		i++;
+		if ((lst->ret = read((lst->fd), buffer, BUFFER_SIZE)) == -1)
+			return (-1);
+		if (!(lst->buffer))
+			free(lst->buffer);
+		lst->buffer = ft_strdup(buffer);
 	}
-	link[i] = '\0';
-	return (link);
+	while ((lst->buffer)[(lst->index)] != '\n' && (lst->buffer)[(lst->index)])
+	{
+		lst->ligne = ft_strjoin((lst->ligne), (lst->buffer)[(lst->index)++]);
+		ft_reset(lst);
+	}
+	if (((lst->buffer)[lst->index] == '\0' && lst->ret != BUFFER_SIZE))
+		lst->fin = 0;
+	if ((lst->buffer)[lst->index] != '\0')
+		lst->index = lst->index + 1;
+	return (1);
+}
+
+int			get_next_line(int fd, char **line)
+{
+	static t_gnl	*lst;
+	t_gnl			*tmp;
+
+	if (fd < 0 || !line || BUFFER_SIZE == 0)
+		return (-1);
+	if (!lst)
+		lst = ft_lstnew(fd);
+	else if (!ft_check(fd, lst))
+		ft_lstadd_back(&lst, ft_lstnew(fd));
+	tmp = lst;
+	while (tmp->fd != fd)
+		tmp = tmp->next;
+	if (!(tmp->fin))
+		return (0);
+	tmp->ligne = ft_strdup("");
+	if (tmp->fin)
+		if (ft_create(tmp) == -1)
+			return (-1);
+	*line = tmp->ligne;
+	if (!(tmp->fin))
+		tmp->fd = -1;
+	if (!(tmp->fin))
+		free(tmp->buffer);
+	return ((tmp->fin));
 }

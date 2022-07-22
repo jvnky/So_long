@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 05:34:44 by ychair           ###   ########.fr       */
+/*   Updated: 2022/07/22 05:49:47 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 # include "minilibx-linux/mlx.h"
 # include "gnl/get_next_line.h"
 # include <fcntl.h>
-# include<stdlib.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 typedef struct s_img
 {

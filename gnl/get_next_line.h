@@ -6,13 +6,9 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:45:41 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 12:46:06 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/05 01:12:58 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-
-
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H

@@ -6,13 +6,13 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:45:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 12:45:44 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/05 11:53:08 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int			ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int		i;
 
@@ -24,15 +24,16 @@ int			ft_strlen(const char *s)
 	return (i);
 }
 
-char		*ft_strdup(const char *src)
+char	*ft_strdup(const char *src)
 {
 	int		i;
 	char	*dest;
 
 	i = 0;
-	if (!(dest = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1))))
+	dest = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 3));
+	if (dest == NULL)
 		return (0);
-	while (src[i])
+	while (src[i] != '\0')
 	{
 		dest[i] = src[i];
 		i++;
@@ -41,7 +42,7 @@ char		*ft_strdup(const char *src)
 	return (dest);
 }
 
-char		*ft_strjoin(char *s1, char const s2)
+char	*ft_strjoin(char *s1, char const s2)
 {
 	int		i;
 	int		j;
@@ -49,7 +50,8 @@ char		*ft_strjoin(char *s1, char const s2)
 
 	j = 0;
 	i = ft_strlen(s1) + 2;
-	if (!(str = malloc(sizeof(char) * i)))
+	str = (char *)malloc(sizeof(char) * i);
+	if (str == NULL)
 		return (NULL);
 	i = 0;
 	if (s1)
@@ -61,11 +63,12 @@ char		*ft_strjoin(char *s1, char const s2)
 	return (str);
 }
 
-t_gnl		*ft_lstnew(int content)
+t_gnl	*ft_lstnew(int content)
 {
 	t_gnl	*new;
 
-	if (!(new = malloc(sizeof(t_gnl))))
+	new = malloc(sizeof(t_gnl));
+	if (new == NULL)
 		return (NULL);
 	new->fd = content;
 	new->next = NULL;
@@ -76,7 +79,7 @@ t_gnl		*ft_lstnew(int content)
 	return (new);
 }
 
-void		ft_lstadd_back(t_gnl **alst, t_gnl *new)
+void	ft_lstadd_back(t_gnl **alst, t_gnl *new)
 {
 	t_gnl	*tmp;
 

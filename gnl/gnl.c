@@ -6,13 +6,13 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:43:51 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 12:46:05 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/05 13:29:09 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int			ft_check(int fd, t_gnl *lst)
+int	ft_check(int fd, t_gnl *lst)
 {
 	while (lst)
 	{
@@ -23,7 +23,7 @@ int			ft_check(int fd, t_gnl *lst)
 	return (0);
 }
 
-void		ft_free(t_gnl *lst)
+void	ft_free(t_gnl *lst)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	int		i;
@@ -38,7 +38,7 @@ void		ft_free(t_gnl *lst)
 	lst->index = 0;
 }
 
-void		ft_reset(t_gnl *lst)
+void	ft_reset(t_gnl *lst)
 {
 	if ((lst->index) >= (BUFFER_SIZE))
 		ft_free(lst);
@@ -48,7 +48,7 @@ void		ft_reset(t_gnl *lst)
 			ft_free(lst);
 }
 
-int			ft_create(t_gnl *lst)
+int	ft_create(t_gnl *lst)
 {
 	char	buffer[BUFFER_SIZE + 1];
 	int		i;
@@ -59,10 +59,9 @@ int			ft_create(t_gnl *lst)
 		buffer[i++] = '\0';
 	if (!(lst->buffer))
 	{
-		if ((lst->ret = read((lst->fd), buffer, BUFFER_SIZE)) == -1)
+		lst->ret = read((lst->fd), buffer, BUFFER_SIZE);
+		if (lst->ret == -1)
 			return (-1);
-		if (!(lst->buffer))
-			free(lst->buffer);
 		lst->buffer = ft_strdup(buffer);
 	}
 	while ((lst->buffer)[(lst->index)] != '\n' && (lst->buffer)[(lst->index)])
@@ -77,7 +76,7 @@ int			ft_create(t_gnl *lst)
 	return (1);
 }
 
-int			get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static t_gnl	*lst;
 	t_gnl			*tmp;

@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 22:03:35 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 11:37:22 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/05 12:05:58 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	initstruch(t_map *maprule)
 void	errorall(void)
 {
 	write(1, "ERROR\n", 6);
-	write(1, "Pointeur NULL\n", 14);
 	exit(0);
 }
 
@@ -53,7 +52,7 @@ int	main(int ac, char **av)
 	maprule->test = (t_img *)malloc(sizeof(t_img));
 	initstruch(maprule);
 	if (ac != 2)
-		write(1, "ERROR\n", 6);
+		errorall();
 	if (maprule == NULL || maprule->test == NULL)
 		errorall();
 	linemap(av[1], maprule);
@@ -67,7 +66,7 @@ int	main(int ac, char **av)
 		return (0);
 	}
 	ft_render(map, maprule);
-	mlx_destroy_window(maprule->test->mlx, maprule->test->mlx_win);
+	closewin(maprule);
 	freeall(maprule, map);
 	return (0);
 }
@@ -75,6 +74,8 @@ int	main(int ac, char **av)
 int	closewin(t_map *maprule)
 {
 	mlx_destroy_window(maprule->test->mlx, maprule->test->mlx_win);
+	mlx_destroy_display(maprule->test->mlx);
+	free(maprule->test->mlx);
 	exit(0);
 	return (0);
 }

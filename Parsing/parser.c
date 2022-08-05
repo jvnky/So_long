@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:48:38 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 12:08:52 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/05 04:10:04 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	linemap(char *av, t_map *maprule)
 	fd = open(av, O_RDONLY);
 	if (fd <= 0)
 	{
-		write(1, "Error\n", 6);
+		write(1, "Invalid fd\n", 11);
 		exit (0);
 	}
 	while (get_next_line(fd, &line))

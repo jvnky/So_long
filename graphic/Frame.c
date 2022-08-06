@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:06:48 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/06 09:02:08 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 09:17:10 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,22 @@ int	ft_strlen1(char *str)
 	while (str[i] && str[i] != '\n')
 		i++;
 	return (i);
+}
+
+int	extension(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	if (str[i - 1] != 'r')
+		return (0);
+	if (str[i - 2] != 'e')
+		return (0);
+	if (str[i - 3] != 'b')
+		return (0);
+	if (str[i - 4] != '.')
+		return (0);
+	return (1);
 }

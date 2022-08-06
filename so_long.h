@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/06 09:01:09 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 09:17:11 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,5 @@ char	*ft_itoa(int nbr);
 void	printmove(t_map *maprule);
 int		closewin(t_map *maprule);
 int		ft_strlen1(char *str);
+int		extension(char *str);
 #endif

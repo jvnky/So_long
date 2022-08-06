@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 22:03:35 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/06 08:45:24 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 09:12:47 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	main(int ac, char **av)
 	maprule = (t_map *)malloc(sizeof(t_map));
 	maprule->test = (t_img *)malloc(sizeof(t_img));
 	initstruch(maprule);
-	if (ac != 2)
+	if (ac != 2 || !extension(av[1]))
 		errorall();
 	if (maprule == NULL || maprule->test == NULL)
 		errorall();

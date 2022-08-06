@@ -6,100 +6,80 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:43:51 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/05 13:29:09 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 07:03:59 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_check(int fd, t_gnl *lst)
+ssize_t	fill_buffer(int fd, char *buffer)
 {
-	while (lst)
-	{
-		if (lst->fd == fd)
-			return (1);
-		lst = lst->next;
-	}
-	return (0);
-}
+	ssize_t	nb;
 
-void	ft_free(t_gnl *lst)
-{
-	char	buffer[BUFFER_SIZE + 1];
-	int		i;
-
-	i = 0;
-	while (i <= BUFFER_SIZE)
-		buffer[i++] = '\0';
-	lst->ret = read((lst->fd), buffer, BUFFER_SIZE);
-	if (lst->buffer)
-		free(lst->buffer);
-	lst->buffer = ft_strdup(buffer);
-	lst->index = 0;
-}
-
-void	ft_reset(t_gnl *lst)
-{
-	if ((lst->index) >= (BUFFER_SIZE))
-		ft_free(lst);
-	else if (lst->buffer)
-		if ((lst->buffer)[(lst->index)] == '\0'
-				&& (lst->ret > (lst->index) || lst->fd == 0))
-			ft_free(lst);
-}
-
-int	ft_create(t_gnl *lst)
-{
-	char	buffer[BUFFER_SIZE + 1];
-	int		i;
-
-	i = 0;
-	ft_reset(lst);
-	while (i <= BUFFER_SIZE)
-		buffer[i++] = '\0';
-	if (!(lst->buffer))
-	{
-		lst->ret = read((lst->fd), buffer, BUFFER_SIZE);
-		if (lst->ret == -1)
-			return (-1);
-		lst->buffer = ft_strdup(buffer);
-	}
-	while ((lst->buffer)[(lst->index)] != '\n' && (lst->buffer)[(lst->index)])
-	{
-		lst->ligne = ft_strjoin((lst->ligne), (lst->buffer)[(lst->index)++]);
-		ft_reset(lst);
-	}
-	if (((lst->buffer)[lst->index] == '\0' && lst->ret != BUFFER_SIZE))
-		lst->fin = 0;
-	if ((lst->buffer)[lst->index] != '\0')
-		lst->index = lst->index + 1;
-	return (1);
-}
-
-int	get_next_line(int fd, char **line)
-{
-	static t_gnl	*lst;
-	t_gnl			*tmp;
-
-	if (fd < 0 || !line || BUFFER_SIZE == 0)
+	if (!buffer)
 		return (-1);
-	if (!lst)
-		lst = ft_lstnew(fd);
-	else if (!ft_check(fd, lst))
-		ft_lstadd_back(&lst, ft_lstnew(fd));
-	tmp = lst;
-	while (tmp->fd != fd)
-		tmp = tmp->next;
-	if (!(tmp->fin))
-		return (0);
-	tmp->ligne = ft_strdup("");
-	if (tmp->fin)
-		if (ft_create(tmp) == -1)
-			return (-1);
-	*line = tmp->ligne;
-	if (!(tmp->fin))
-		tmp->fd = -1;
-	if (!(tmp->fin))
-		free(tmp->buffer);
-	return ((tmp->fin));
+	nb = read(fd, buffer, BUFFER_SIZE);
+	if (nb < 1)
+		return (nb);
+	buffer[nb] = '\0';
+	return (nb);
+}
+
+char	*stop_condition(ssize_t nb, char *valid_line)
+{
+	if (nb < 0)
+	{
+		if (valid_line)
+			free(valid_line);
+		return (NULL);
+	}
+	return (valid_line);
+}
+
+char	*extract_str(char *buffer, ssize_t *new_line)
+{
+	size_t	i;
+	char	*extracted;
+
+	i = 0;
+	if (buffer)
+	{
+		while (*(buffer + (i + 1)) && *(buffer + i) != '\n')
+				i++;
+		if (*(buffer + i) == '\n')
+				*new_line = TRUE;
+		extracted = ft_strndup(buffer, i);
+		if (!extracted)
+			return (NULL);
+		ft_memmove(buffer, (buffer + (i + 1)), ft_strlen((buffer + i)));
+		return (extracted);
+	}
+	return (NULL);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	buffer[BUFFER_SIZE + 1];
+	char		*valid_line;
+	char		*temp;
+	ssize_t		nb;
+	ssize_t		new_line;
+
+	nb = 2;
+	new_line = FALSE;
+	valid_line = NULL;
+	if (fd < 0 || fd >= 1024 || BUFFER_SIZE < 1)
+		return (NULL);
+	while (!new_line)
+	{
+		if (!*buffer)
+			nb = fill_buffer(fd, buffer);
+		if (nb < 1)
+			return (stop_condition(nb, valid_line));
+		temp = extract_str(buffer, &new_line);
+		valid_line = ft_strjoin_and_free(valid_line, temp);
+		if (!valid_line)
+			return (stop_condition(-1, valid_line));
+	}
+	return (stop_condition(nb, valid_line));
 }

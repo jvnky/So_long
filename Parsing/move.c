@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/21 04:01:34 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 02:58:33 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 05:55:19 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	up(t_map *maprule, int i, int j)
 {
 	char	tmp;
 
+	maprule->move++;
 	if (maprule->map[i - 1][j] != maprule->exit)
 	{
 		if (maprule->map[i - 1][j] == maprule->col)
@@ -27,15 +28,15 @@ void	up(t_map *maprule, int i, int j)
 		maprule->map[i][j] = maprule->map[i - 1][j];
 		maprule->map[i - 1][j] = tmp;
 		maprule->c = 'Q';
-		maprule->move++;
 		printmove(maprule);
 	}
 	else
 	{
 		if (maprule->collect == maprule->maxcollect)
 		{
+			printmove(maprule);
 			write(1, "YOU WIN\n", 8);
-			exit(0);
+			closewin(maprule);
 		}
 	}
 }
@@ -44,6 +45,7 @@ void	down(t_map *maprule, int i, int j)
 {
 	char	tmp;
 
+	maprule->move++;
 	if (maprule->map[i + 1][j] != maprule->exit)
 	{
 		if (maprule->map[i + 1][j] == maprule->col)
@@ -55,15 +57,15 @@ void	down(t_map *maprule, int i, int j)
 		maprule->map[i][j] = maprule->map[i + 1][j];
 		maprule->map[i + 1][j] = tmp;
 		maprule->c = 'Q';
-		maprule->move++;
 		printmove(maprule);
 	}
 	else
 	{
 		if (maprule->collect == maprule->maxcollect)
 		{
+			printmove(maprule);
 			write(1, "YOU WIN\n", 8);
-			exit(0);
+			closewin(maprule);
 		}
 	}
 }
@@ -72,6 +74,7 @@ void	left(t_map *maprule, int i, int j)
 {
 	char	tmp;
 
+	maprule->move++;
 	if (maprule->map[i][j - 1] != maprule->exit)
 	{
 		if (maprule->map[i][j - 1] == maprule->col)
@@ -83,15 +86,15 @@ void	left(t_map *maprule, int i, int j)
 		maprule->map[i][j] = maprule->map[i][j - 1];
 		maprule->map[i][j - 1] = tmp;
 		maprule->c = 'Q';
-		maprule->move++;
 		printmove(maprule);
 	}
 	else
 	{
 		if (maprule->collect == maprule->maxcollect)
 		{
+			printmove(maprule);
 			write(1, "YOU WIN\n", 8);
-			exit(0);
+			closewin(maprule);
 		}
 	}
 }
@@ -100,6 +103,7 @@ void	right(t_map *maprule, int i, int j)
 {
 	char	tmp;
 
+	maprule->move++;
 	if (maprule->map[i][j + 1] != maprule->exit)
 	{
 		if (maprule->map[i][j + 1] == maprule->col)
@@ -111,15 +115,15 @@ void	right(t_map *maprule, int i, int j)
 		maprule->map[i][j] = maprule->map[i][j + 1];
 		maprule->map[i][j + 1] = tmp;
 		maprule->c = 'Q';
-		maprule->move++;
 		printmove(maprule);
 	}
 	else
 	{
 		if (maprule->collect == maprule->maxcollect)
 		{
+			printmove(maprule);
 			write(1, "YOU WIN\n", 8);
-			exit(0);
+			closewin(maprule);
 		}
 	}
 }

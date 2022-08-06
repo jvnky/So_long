@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/01 03:17:50 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/05 12:06:13 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 07:04:26 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	path(char c, t_map *img)
 	mlx_put_image_to_window(img->test->mlx, img->test->mlx_win,
 		img->test->img, img->test->x, img->test->y);
 	mlx_destroy_image(img->test->mlx, img->test->img);
-
 	return (1);
 }
 

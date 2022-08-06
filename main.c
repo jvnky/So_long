@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 22:03:35 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/05 12:05:58 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 07:03:37 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,20 @@ void	errorall(void)
 	exit(0);
 }
 
-void	freeall(t_map *maprule, char **map)
+void	freeall(t_map *maprule)
 {
 	int	i;
 
 	i = 0;
 	while (i < maprule->line)
-		free(map[i++]);
-	free(map);
+		free(maprule->map[i++]);
+	free(maprule->map);
 	free(maprule->test);
 	free(maprule);
 }
 
 int	main(int ac, char **av)
 {
-	char	**map;
 	t_map	*maprule;
 
 	maprule = (t_map *)malloc(sizeof(t_map));
@@ -56,18 +55,17 @@ int	main(int ac, char **av)
 	if (maprule == NULL || maprule->test == NULL)
 		errorall();
 	linemap(av[1], maprule);
-	map = (char **) malloc(sizeof(char *) * maprule->line + 1);
-	if (map == NULL)
+	maprule->map = (char **) malloc(sizeof(char *) * maprule->line + 1);
+	if (maprule->map == NULL)
 		errorall();
-	map = puttab(av[1], map);
-	if (!ft_errormap(map, maprule))
+	maprule->map = puttab(av[1], maprule->map, maprule->line);
+	if (!ft_errormap(maprule->map, maprule))
 	{
-		freeall(maprule, map);
+		freeall(maprule);
 		return (0);
 	}
-	ft_render(map, maprule);
+	ft_render(maprule->map, maprule);
 	closewin(maprule);
-	freeall(maprule, map);
 	return (0);
 }
 
@@ -76,6 +74,7 @@ int	closewin(t_map *maprule)
 	mlx_destroy_window(maprule->test->mlx, maprule->test->mlx_win);
 	mlx_destroy_display(maprule->test->mlx);
 	free(maprule->test->mlx);
+	freeall(maprule);
 	exit(0);
 	return (0);
 }

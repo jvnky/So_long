@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 06:23:30 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 05:49:47 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 06:43:24 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ enum e_keycode
 
 int		frame_map(t_map *maprule, char c);
 void	render_frame(t_map *maprule);
-char	**puttab(char *av, char **map);
+char	**puttab(char *av, char **map, int line);
 int		linemap(char *av, t_map *maprule);
 int		verifmap(char **map, t_map *maprule);
 int		ft_errormap(char **map, t_map *maprule);

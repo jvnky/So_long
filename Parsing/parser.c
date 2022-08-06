@@ -6,16 +6,15 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:48:38 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/05 04:10:04 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 07:03:33 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../so_long.h"
 
-char	**puttab(char *av, char **map)
+char	**puttab(char *av, char **map, int line)
 {
 	int		fd;
-	char	*line;
 	int		i;
 
 	fd = open(av, O_RDONLY);
@@ -25,13 +24,9 @@ char	**puttab(char *av, char **map)
 		exit (0);
 	}
 	i = 0;
-	while (get_next_line(fd, &line))
-	{
-		map[i] = ft_strdup(line);
-		i++;
-		free(line);
-	}
-	free(line);
+	map[i] = get_next_line(fd);
+	while (i++ < line - 1)
+		map[i] = get_next_line(fd);
 	return (map);
 }
 
@@ -48,14 +43,15 @@ int	linemap(char *av, t_map *maprule)
 		write(1, "Invalid fd\n", 11);
 		exit (0);
 	}
-	while (get_next_line(fd, &line))
+	line = get_next_line(fd);
+	while (line)
 	{
 		maprule->column = ft_strlen(line);
 		if (line)
 			free(line);
+		line = get_next_line(fd);
 		i++;
 	}
-	free(line);
 	maprule->line = i;
 	close(fd);
 	return (1);
@@ -86,12 +82,12 @@ int	verifmap(char **map, t_map *maprule)
 	int	j;
 	int	tab[255];
 
-	i = 0;
 	maprule->maxcollect = 0;
+	i = 0;
 	while (i < maprule->line)
 	{
 		j = 0;
-		while (j < maprule->column)
+		while (j < maprule->column - 1)
 		{
 			if (!toomuchline(map[i][j], maprule, i, tab))
 				return (0);

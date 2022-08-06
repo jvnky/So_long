@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 03:06:48 by ychair            #+#    #+#             */
-/*   Updated: 2022/07/22 05:54:45 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 09:02:08 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,16 @@ void	render_frame(t_map *maprule)
 		i++;
 		maprule->test->y += maprule->test->img_width;
 	}
+}
+
+int	ft_strlen1(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != '\n')
+		i++;
+	return (i);
 }

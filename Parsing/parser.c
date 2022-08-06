@@ -6,7 +6,7 @@
 /*   By: ychair <ychair@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/23 21:48:38 by ychair            #+#    #+#             */
-/*   Updated: 2022/08/06 07:03:33 by ychair           ###   ########.fr       */
+/*   Updated: 2022/08/06 09:01:21 by ychair           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**puttab(char *av, char **map, int line)
 	}
 	i = 0;
 	map[i] = get_next_line(fd);
-	while (i++ < line - 1)
+	while (i++ < line)
 		map[i] = get_next_line(fd);
 	return (map);
 }
@@ -44,9 +44,11 @@ int	linemap(char *av, t_map *maprule)
 		exit (0);
 	}
 	line = get_next_line(fd);
+	maprule->column = ft_strlen1(line);
 	while (line)
 	{
-		maprule->column = ft_strlen(line);
+		if (maprule->column != ft_strlen1(line))
+			errorall();
 		if (line)
 			free(line);
 		line = get_next_line(fd);
@@ -87,11 +89,11 @@ int	verifmap(char **map, t_map *maprule)
 	while (i < maprule->line)
 	{
 		j = 0;
-		while (j < maprule->column - 1)
+		while (j < maprule->column)
 		{
 			if (!toomuchline(map[i][j], maprule, i, tab))
 				return (0);
-			if ((j == 0 || j == maprule->column - 1) && map[i][j] != '1')
+			if ((j == 0 || j == maprule->column) && map[i][j] != '1')
 				return (0);
 			j++;
 		}
@@ -115,8 +117,11 @@ int	ft_errormap(char **map, t_map *maprule)
 	}
 	while (i < maprule->line)
 	{
-		if (i > 0 && ft_strlen(map[i]) != ft_strlen(map[i - 1]))
+		if (i > 0 && ft_strlen1(map[i]) != ft_strlen1(map[i - 1]))
+		{
+			errorall();
 			return (0);
+		}
 		i++;
 	}
 	return (1);
